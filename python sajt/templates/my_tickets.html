@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Moji tiketi</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        .navbar {
+            background: #1f2937;
+            color: white;
+            padding: 18px 30px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .new-ticket {
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .new-ticket:hover {
+            background: #1d4ed8;
+        }
+
+        .message {
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .tickets {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(320px, 1fr));
+
+            gap: 20px;
+        }
+
+        .ticket {
+            background: white;
+
+            padding: 22px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .ticket h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #555;
+
+            line-height: 1.5;
+
+            margin-bottom: 20px;
+
+            white-space: pre-wrap;
+        }
+
+        .info {
+            margin: 10px 0;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        /* PRIORITET */
+
+        .low {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .high {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* STATUS */
+
+        .open {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .resolved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .closed {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        /* DONE */
+
+        .done-form {
+            margin-top: 20px;
+        }
+
+        .done-button {
+            width: 100%;
+
+            border: none;
+
+            background: #16a34a;
+
+            color: white;
+
+            padding: 11px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        .done-button:hover {
+            background: #15803d;
+        }
+
+        .completed {
+            margin-top: 20px;
+
+            padding: 12px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+        }
+
+        /* EMPTY */
+
+        .empty {
+            background: white;
+
+            padding: 50px;
+
+            text-align: center;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty a {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            background: #2563eb;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+        }
+
+        .empty a:hover {
+            background: #1d4ed8;
+        }
+
+        /* MOBILNI PRIKAZ */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+
+                text-align: center;
+            }
+
+            .navbar a {
+                margin: 0 6px;
+            }
+
+            .header {
+                flex-direction: column;
+
+                gap: 15px;
+
+                align-items: stretch;
+            }
+
+            .new-ticket {
+                text-align: center;
+            }
+
+            .tickets {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<div class="navbar">
+
+    <h2>
+        🛠 IT Help Desk
+    </h2>
+
+    <div>
+
+        <a href="/dashboard">
+            🏠 Dashboard
+        </a>
+
+        <a href="/create-ticket">
+            ➕ Novi ticket
+        </a>
+
+        <a href="/profile">
+            👤 Profil
+        </a>
+
+        <a href="/logout">
+            🚪 Odjava
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            🎫 Moji tiketi
+        </h1>
+
+        <a
+            href="/create-ticket"
+            class="new-ticket"
+        >
+            ➕ Novi ticket
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         FLASH PORUKE
+    ================================================== -->
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+
+        {% for category, message in messages %}
+
+            <div class="message {{ category }}">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endwith %}
+
+
+    <!-- =================================================
+         TICKETS
+    ================================================== -->
+
+    {% if tickets %}
+
+
+        <div class="tickets">
+
+
+            {% for ticket in tickets %}
+
+
+                <div class="ticket">
+
+
+                    <!-- NASLOV -->
+
+                    <h3>
+
+                        #{{ ticket["id"] }}
+
+                        —
+
+                        {{ ticket["title"] }}
+
+                    </h3>
+
+
+                    <!-- OPIS -->
+
+                    <div class="description">
+
+                        {{ ticket["description"] }}
+
+                    </div>
+
+
+                    <!-- KATEGORIJA -->
+
+                    <div class="info">
+
+                        <span class="label">
+                            Kategorija:
+                        </span>
+
+                        {{ ticket["category"] }}
+
+                    </div>
+
+
+                    <!-- PRIORITET -->
+
+                    <div class="info">
+
+                        <span class="label">
+                            Prioritet:
+                        </span>
+
+
+                        {% if ticket["priority"] == "Low" %}
+
+                            <span class="badge low">
+                                Nizak
+                            </span>
+
+
+                        {% elif ticket["priority"] == "Medium" %}
+
+                            <span class="badge medium">
+                                Srednji
+                            </span>
+
+
+                        {% elif ticket["priority"] == "High" %}
+
+                            <span class="badge high">
+                                Visok
+                            </span>
+
+
+                        {% elif ticket["priority"] == "Critical" %}
+
+                            <span class="badge critical">
+                                Kritičan
+                            </span>
+
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="info">
+
+                        <span class="label">
+                            Status:
+                        </span>
+
+
+                        {% if ticket["status"] == "Open" %}
+
+                            <span class="badge open">
+                                🟠 Otvoren
+                            </span>
+
+
+                        {% elif ticket["status"] == "In Progress" %}
+
+                            <span class="badge progress">
+                                🔵 U obradi
+                            </span>
+
+
+                        {% elif ticket["status"] == "Resolved" %}
+
+                            <span class="badge resolved">
+                                🟢 Rešen
+                            </span>
+
+
+                        {% elif ticket["status"] == "Closed" %}
+
+                            <span class="badge closed">
+                                ✓ Urađen
+                            </span>
+
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DATUM -->
+
+                    <div class="info">
+
+                        <span class="label">
+                            Datum:
+                        </span>
+
+                        {{ ticket["created_at"] }}
+
+                    </div>
+
+
+                    <!-- =================================================
+                         DUGME ZA ZAVRŠAVANJE TICKETA
+                    ================================================== -->
+
+                    {% if ticket["status"] != "Closed" %}
+
+
+                        <form
+                            method="POST"
+                            action="/ticket/done/{{ ticket['id'] }}"
+                            class="done-form"
+                        >
+
+                            <button
+                                type="submit"
+                                class="done-button"
+                            >
+
+                                ✓ Označi kao urađeno
+
+                            </button>
+
+                        </form>
+
+
+                    {% else %}
+
+
+                        <div class="completed">
+
+                            ✓ Ticket je označen kao urađen
+
+                        </div>
+
+
+                    {% endif %}
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             NEMA TIKETA
+        ================================================== -->
+
+        <div class="empty">
+
+            <h2>
+                📭 Nemaš nijedan ticket
+            </h2>
+
+            <p>
+                Trenutno nemaš kreiranih ticket-a.
+            </p>
+
+            <a href="/create-ticket">
+
+                ➕ Kreiraj prvi ticket
+
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>
+

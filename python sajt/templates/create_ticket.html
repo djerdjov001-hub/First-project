@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Novi Ticket - IT Help Desk</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        body {
+            margin: 0;
+        }
+
+        .ticket-page {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            justify-content: center;
+            padding: 45px 20px;
+            box-sizing: border-box;
+        }
+
+        .ticket-container {
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .ticket-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .ticket-icon {
+            font-size: 50px;
+            margin-bottom: 8px;
+        }
+
+        .ticket-header h1 {
+            margin: 0 0 8px;
+        }
+
+        .ticket-header p {
+            margin: 0;
+            color: #777;
+        }
+
+        .ticket-form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            box-sizing: border-box;
+            background: #fff;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, 0.12);
+        }
+
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+        }
+
+        .field-help {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #6f42c1;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .cancel-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #6f42c1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cancel-link:hover {
+            text-decoration: underline;
+        }
+
+        .required {
+            color: #dc3545;
+        }
+
+        @media (max-width: 650px) {
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .ticket-form-card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        IT Help Desk
+    </div>
+
+    <div class="nav-links">
+
+        <a href="/dashboard">
+            🏠 Kontrolna tabla
+        </a>
+
+        <a href="/profile">
+            👤 Profil
+        </a>
+
+        <a href="/create-ticket">
+            🎫 Novi Ticket
+        </a>
+
+        <a href="/my-tickets">
+            📋 Moji Ticketi
+        </a>
+
+        <a href="/change-password">
+            🔐 Lozinka
+        </a>
+
+        <a href="/system-info">
+            💻 Sistem
+        </a>
+
+        <a href="/logout">
+            🚪 Odjavi se
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- TICKET PAGE -->
+
+<div class="ticket-page">
+
+    <div class="ticket-container">
+
+
+        <!-- HEADER -->
+
+        <div class="ticket-header">
+
+            <div class="ticket-icon">
+                🎫
+            </div>
+
+            <h1>
+                Novi Ticket
+            </h1>
+
+            <p>
+                Prijavi IT problem ili zahtev našem Help Desk timu.
+            </p>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <div class="ticket-form-card">
+
+            <form method="POST">
+
+
+                <!-- TITLE -->
+
+                <div class="form-group">
+
+                    <label for="title">
+                        Naslov <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        placeholder="Npr. Računar se ne povezuje na mrežu"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- CATEGORY + PRIORITY -->
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Kategorija <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="category"
+                            name="category"
+                            required
+                        >
+
+                            <option value="">
+                                Izaberi kategoriju
+                            </option>
+
+                            <option value="Hardware">
+                                💻 Hardware
+                            </option>
+
+                            <option value="Software">
+                                🖥️ Software
+                            </option>
+
+                            <option value="Network">
+                                🌐 Network
+                            </option>
+
+                            <option value="Account">
+                                👤 Account
+                            </option>
+
+                            <option value="Other">
+                                📦 Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="priority">
+                            Prioritet <span class="required">*</span>
+                        </label>
+
+                        <select
+                            id="priority"
+                            name="priority"
+                            required
+                        >
+
+                            <option value="">
+                                Izaberi prioritet
+                            </option>
+
+                            <option value="Low">
+                                🟢 Low
+                            </option>
+
+                            <option value="Medium">
+                                🟡 Medium
+                            </option>
+
+                            <option value="High">
+                                🟠 High
+                            </option>
+
+                            <option value="Critical">
+                                🔴 Critical
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+
+                <div class="form-group">
+
+                    <label for="description">
+                        Opis problema <span class="required">*</span>
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        placeholder="Detaljno opiši problem ili zahtev..."
+                        required
+                    ></textarea>
+
+                    <span class="field-help">
+                        Što detaljnije opišeš problem, lakše ćemo ga rešiti.
+                    </span>
+
+                </div>
+
+
+                <!-- SUBMIT -->
+
+                <button
+                    type="submit"
+                    class="submit-button">
+
+                    🎫 Pošalji Ticket
+
+                </button>
+
+
+            </form>
+
+
+            <a
+                href="/my-tickets"
+                class="cancel-link">
+
+                ← Nazad na moje tickete
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

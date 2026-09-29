@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registracija</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Registracija</h1>
+
+        <!-- Flash poruke -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form method="POST" action="/register">
+
+            <label>Korisničko ime:</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Unesite korisničko ime"
+                required
+            >
+
+            <label>Email:</label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Unesite email"
+                required
+            >
+
+            <label>Lozinka:</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Unesite lozinku"
+                required
+            >
+
+            <label>Potvrdi lozinku:</label>
+
+            <input
+                type="password"
+                name="confirm_password"
+                placeholder="Ponovite lozinku"
+                required
+            >
+
+            <p class="password-info">
+                Lozinka mora imati najmanje 8 karaktera i najmanje jedan broj.
+            </p>
+
+            <button type="submit">
+                Registruj se
+            </button>
+
+        </form>
+
+        <br>
+
+        <p class="center">
+            Već imaš nalog?
+            <a href="/login">Prijavi se</a>
+        </p>
+
+    </div>
+
+</body>
+
+</html>

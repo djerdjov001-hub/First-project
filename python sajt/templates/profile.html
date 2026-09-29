@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Moj profil</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            IT Help Desk
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">
+                🏠 Kontrolna tabla
+            </a>
+
+            <a href="/profile">
+                👤 Profil
+            </a>
+
+            <a href="/create-ticket">
+                🎫 Novi Ticket
+            </a>
+
+            <a href="/my-tickets">
+                📋 Moji Ticketi
+            </a>
+
+            <a href="/change-password">
+                🔐 Lozinka
+            </a>
+
+            <a href="/system-info">
+                💻 Sistem
+            </a>
+
+            <a href="/logout">
+                🚪 Odjavi se
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>
+            👤 Moj profil
+        </h1>
+
+
+        <div class="card">
+
+            <h2>
+                Podaci korisnika
+            </h2>
+
+            <p>
+                <strong>Korisničko ime:</strong>
+                {{ user["username"] }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ user["email"] }}
+            </p>
+
+            <p>
+                <strong>ID korisnika:</strong>
+                {{ user["id"] }}
+            </p>
+
+            <p>
+                <strong>Uloga:</strong>
+
+                {% if user["is_admin"] == 1 %}
+
+                    Administrator
+
+                {% else %}
+
+                    Korisnik
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+        <br>
+
+        <a href="/dashboard">
+            ← Nazad na kontrolnu tablu
+        </a>
+
+    </div>
+
+</body>
+
+</html>

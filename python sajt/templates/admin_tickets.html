@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Ticketi</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        a {
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #f0f0f0;
+        }
+
+        textarea {
+            width: 200px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+
+        button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .update {
+            background: #007bff;
+            color: white;
+        }
+
+        .delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .message {
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .empty {
+            padding: 20px;
+            background: #f5f5f5;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🎫 IT Help Desk - Admin</h1>
+
+    <p>
+        <a href="/admin">👤 Admin Panel</a>
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/logout">🚪 Odjavi se</a>
+    </p>
+
+    <hr>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    {% if tickets %}
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Korisnik</th>
+            <th>Email</th>
+            <th>Naslov</th>
+            <th>Opis</th>
+            <th>Kategorija</th>
+            <th>Prioritet</th>
+            <th>Status</th>
+            <th>Datum</th>
+            <th>Akcije</th>
+        </tr>
+
+        {% for ticket in tickets %}
+
+        <tr>
+
+            <td>
+                #{{ ticket[0] }}
+            </td>
+
+            <td>
+                {{ ticket[7] }}
+            </td>
+
+            <td>
+                {{ ticket[8] }}
+            </td>
+
+            <td>
+                <strong>{{ ticket[1] }}</strong>
+            </td>
+
+            <td>
+                {{ ticket[2] }}
+            </td>
+
+            <td>
+                {{ ticket[3] }}
+            </td>
+
+            <td>
+                {{ ticket[4] }}
+            </td>
+
+            <td>
+                {{ ticket[5] }}
+            </td>
+
+            <td>
+                {{ ticket[6] }}
+            </td>
+
+            <td>
+
+                <form
+                    method="POST"
+                    action="/admin/tickets/status/{{ ticket[0] }}"
+                >
+
+                    <select name="status">
+
+                        <option value="Open"
+                            {% if ticket[5] == "Open" %}selected{% endif %}>
+                            Open
+                        </option>
+
+                        <option value="In Progress"
+                            {% if ticket[5] == "In Progress" %}selected{% endif %}>
+                            In Progress
+                        </option>
+
+                        <option value="Resolved"
+                            {% if ticket[5] == "Resolved" %}selected{% endif %}>
+                            Resolved
+                        </option>
+
+                        <option value="Closed"
+                            {% if ticket[5] == "Closed" %}selected{% endif %}>
+                            Closed
+                        </option>
+
+                    </select>
+
+                    <br>
+
+                    <button
+                        type="submit"
+                        class="update"
+                    >
+                        Promeni status
+                    </button>
+
+                </form>
+
+                <br>
+
+                <form
+                    method="POST"
+                    action="/admin/tickets/delete/{{ ticket[0] }}"
+                    onsubmit="return confirm('Da li sigurno želiš da obrišeš ovaj ticket?');"
+                >
+
+                    <button
+                        type="submit"
+                        class="delete"
+                    >
+                        🗑️ Obriši
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+        <div class="empty">
+            Trenutno nema prijavljenih ticketa.
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

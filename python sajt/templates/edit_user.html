@@ -1,0 +1,86 @@
+```html
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Izmena korisnika</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Izmena korisnika</h1>
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST"
+              action="/admin/edit-user/{{ user[0] }}">
+
+            <label>Korisničko ime:</label>
+
+            <input
+                type="text"
+                name="username"
+                value="{{ user[1] }}"
+                required
+            >
+
+
+            <label>Email:</label>
+
+            <input
+                type="email"
+                name="email"
+                value="{{ user[2] }}"
+                required
+            >
+
+
+            <button type="submit">
+                Sačuvaj izmene
+            </button>
+
+        </form>
+
+
+        <br>
+
+
+        <p class="center">
+
+            <a href="/admin">
+                Nazad na admin panel
+            </a>
+
+        </p>
+
+    </div>
+
+</body>
+
+</html>
+

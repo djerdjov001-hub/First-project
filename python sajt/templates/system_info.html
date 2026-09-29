@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>System Information</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            IT Help Desk
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/dashboard">Dashboard</a>
+
+            <a href="/my-tickets">Moji Ticketi</a>
+
+            <a href="/create-ticket">Novi Ticket</a>
+
+            <a href="/profile">Profil</a>
+
+            <a href="/system-info">System Info</a>
+
+            {% if session.get("is_admin") == 1 %}
+                <a href="/admin">Admin</a>
+            {% endif %}
+
+            <a href="/logout" class="logout">Logout</a>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <h1>System Information</h1>
+
+        <p>
+            Osnovne informacije o sistemu na kojem radi Flask aplikacija.
+        </p>
+
+
+        <div class="info-card">
+
+            <h2>Computer</h2>
+
+            <p>
+                <strong>Hostname:</strong>
+                {{ hostname }}
+            </p>
+
+            <p>
+                <strong>IP Address:</strong>
+                {{ ip_address }}
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h2>Operating System</h2>
+
+            <p>
+                <strong>System:</strong>
+                {{ operating_system }}
+            </p>
+
+            <p>
+                <strong>Version:</strong>
+                {{ operating_system_version }}
+            </p>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <h2>Software</h2>
+
+            <p>
+                <strong>Python:</strong>
+                {{ python_version }}
+            </p>
+
+            <p>
+                <strong>Flask:</strong>
+                {{ flask_version }}
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+

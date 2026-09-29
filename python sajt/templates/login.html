@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* Ceo ekran */
+        body {
+            min-height: 100vh;
+            margin: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Login kartica */
+        .container {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>Prijava</h1>
+
+        <form method="POST" action="/login">
+
+            <label>Email:</label>
+
+            <input
+                type="email"
+                name="email"
+                required
+            >
+
+
+            <label>Lozinka:</label>
+
+            <input
+                type="password"
+                name="password"
+                required
+            >
+
+
+            <button type="submit">
+                Uloguj se
+            </button>
+
+        </form>
+
+
+        <br>
+
+
+        <p class="center">
+
+            Nemaš nalog?
+
+            <a href="/register">
+                Registruj se
+            </a>
+
+        </p>
+
+    </div>
+
+</body>
+
+</html>
